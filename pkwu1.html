@@ -1,0 +1,1705 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Try Out TKA PKWU - SMAN 1 Randublatung</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React & ReactDOM CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <!-- Babel standalone for JSX parsing -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8fafc;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useMemo, useRef } = React;
+
+        // DATA SOAL TKA PKWU SMAN 1 RANDUBLATUNG (30 SOAL LENGKAP)
+        const MASTER_QUESTIONS = [
+            {
+                id: 1,
+                type: "pg",
+                code: "25PKWPPDPPSW10SK-000000-0521",
+                elemen: "Kegiatan Produksi, Pemasaran, dan Distribusi",
+                subelemen: "proses produksi",
+                stem: "UMKM Arya sedang memproduksi gantungan kunci akrilik dengan desain custom. Dalam proses produksinya, mereka melalui beberapa tahapan: pembuatan desain digital, pemotongan bahan, pencetakan, dan perakitan. Untuk mendukung produksi tersebut, mereka menggunakan laptop, perangkat lunak desain grafis, mesin laser cutting, akrilik lembaran, cincin logam kecil, lem akrilik khusus.",
+                question: "Berdasarkan deskripsi, manakah alat yang digunakan dalam proses produksi gantungan kunci akrilik tersebut?",
+                options: [
+                    "Akrilik lembaran, cincin logam kecil, lem akrilik khusus",
+                    "Laptop, perangkat lunak desain grafis, mesin laser cutting",
+                    "Gantungan kunci jadi, akrilik lembaran, lem akrilik",
+                    "Desain digital, cincin logam kecil, mesin laser cutting",
+                    "Laptop, cincin logam kecil, desain digital"
+                ],
+                answer: 1
+            },
+            {
+                id: 2,
+                type: "pg",
+                code: "25PKWPPDPKMW11SK-000000-0432",
+                elemen: "Kegiatan Produksi, Pemasaran, dan Distribusi",
+                subelemen: "pengemasan produk",
+                stem: "Kelompok murid SMK jurusan Tata Boga memproduksi kue kering (cookies) dalam skala rumahan untuk dipasarkan secara daring. Selama proses distribusi ke luar kota, mereka menerima keluhan dari pelanggan bahwa cookies banyak yang remuk dan melempem saat diterima. Setelah dievaluasi, diketahui bahwa kemasan hanya menggunakan plastik tipis biasa dan tanpa lapisan kedap udara.",
+                question: "Berdasarkan kasus tersebut, teknik pengemasan yang paling tepat untuk menjaga kualitas dan bentuk produk cookies adalah...",
+                options: [
+                    "Menggunakan kantong plastik tebal ziplock dan menambahkan bubble wrap untuk daya tahan",
+                    "Mengemas cookies dalam plastik tipis bening agar isi mudah terlihat oleh pelanggan",
+                    "Mengemas cookies dalam kotak karton bergelombang tanpa pelapis plastik, tapi menggunakan kertas tisu",
+                    "Menggunakan plastik OPP dan menyisipkan silica gel untuk mengurangi kelembapan dalam kemasan",
+                    "Menambahkan label \"Fragile\" dan \"Keep Dry\" di luar kemasan serta menggunakan kertas tisu sebagai pelapis"
+                ],
+                answer: 3
+            },
+            {
+                id: 3,
+                type: "pg",
+                code: "25PKWPPDPRDW09SK-000000-0446",
+                elemen: "Kegiatan Produksi, Pemasaran, dan Distribusi",
+                subelemen: "perencanaan produksi",
+                stem: "Tim wirausaha muda sedang merancang produksi roti isi cokelat kemasan sebagai bagian dari kegiatan promosi. Mereka menargetkan produksi sebanyak 500 pcs dalam waktu 4 hari kerja sesuai pemesanan oleh konsumen. Bahan baku utama yang disiapkan sejak awal terdiri dari 25 kg tepung terigu, 10 kg pasta cokelat, serta bahan pelengkap lainnya. Setiap hari 4 orang bekerja selama 5 jam. Namun pada hari pertama hanya 90 roti berhasil diproduksi karena kendala waktu fermentasi adonan yang lebih lama dan kapasitas oven terbatas (15 loyang/siklus). Kondisi ini membuat tim khawatir target produksi tidak tercapai.",
+                question: "Keputusan produksi yang tepat untuk memastikan target tercapai adalah...",
+                options: [
+                    "Menambah jam kerja harian agar fermentasi dan pemanggangan bisa diatur lebih fleksibel",
+                    "Mengganti jenis adonan agar tidak memerlukan proses fermentasi dan pemanggangan",
+                    "Menambah jumlah bahan baku agar cadangan tetap tersedia jika produksi roti terhambat",
+                    "Mengurangi target produksi menjadi 400 pcs agar lebih realistis",
+                    "Mengganti isian roti dari cokelat ke selai agar proses lebih cepat"
+                ],
+                answer: 0
+            },
+            {
+                id: 4,
+                type: "kategori",
+                code: "25PKWPPDPMRW14SK-000000-0094",
+                elemen: "Kegiatan Produksi, Pemasaran, dan Distribusi",
+                subelemen: "pemasaran produk",
+                stem: "Sekelompok Murid SMK membuat produk tempat pensil berbahan bambu yang diberi lukisan motif etnik. Produk ini unik, ramah lingkungan, dan ditujukan untuk pelajar dan pecinta kerajinan lokal. Penjualan selama bazar sekolah cukup baik, namun menurun setelah bazar berakhir. Mereka juga berencana meningkatkan penjualan sampai luar sekolah. Berdasarkan hasil evaluasi, perlu dilakukan perbaikan strategi pemasaran.",
+                question: "Tentukan Benar/Salah pernyataan berikut ini berdasarkan strategi yang paling tepat dalam memasarkan produk agar penjualan meningkat.",
+                statements: [
+                    { text: "Menunggu bazar berikutnya untuk fokus menjual produk agar tidak menambah biaya promosi.", answer: "Salah" },
+                    { text: "Melakukan penjualan melalui grup chat murid agar penjualan meningkat.", answer: "Benar" },
+                    { text: "Membuat akun media sosial dan mengunggah konten produk secara rutin.", answer: "Benar" }
+                ]
+            },
+            {
+                id: 5,
+                type: "mcma",
+                code: "25PKWPPDPMRW14SK-000000-0230",
+                elemen: "Kegiatan Produksi, Pemasaran, dan Distribusi",
+                subelemen: "pemasaran produk",
+                stem: "Anatama seorang wirausaha muda yang memproduksi sabun organik alami tanpa bahan kimia. Produk tersebut memiliki target pasar konsumen yang memiliki kesadaran menggunakan produk alami dengan rentang usia antara 20-40 tahun. Ia berencana menyusun strategi pemasaran secara online agar produknya menjangkau pasar yang lebih luas.",
+                question: "Manakah strategi pemasaran online berikut yang paling relevan untuk diterapkan dalam memasarkan produk sabun organik tersebut? (Pilihan jawaban benar lebih dari satu)",
+                options: [
+                    "Membagikan konten edukatif dan visual di media sosial tentang manfaat sabun organik",
+                    "Menyusun artikel blog tentang manfaat sabun alami dan mengoptimalkannya agar mudah ditemukan di mesin pencari",
+                    "Menyusun kampanye online yang mengajak konsumen membagikan pengalaman mereka menggunakan produk",
+                    "Mengirim broadcast message sebagai bagian promosi ke nomor acak sebanyak mungkin agar menjangkau audiens luas",
+                    "Membuat siaran langsung rutin di platform video daring untuk membahas tren bisnis global"
+                ],
+                answer: [0, 1, 2]
+            },
+            {
+                id: 6,
+                type: "pg",
+                code: "25PKWPPDPMRW15SK-000000-0001",
+                elemen: "Kegiatan Produksi, Pemasaran, dan Distribusi",
+                subelemen: "pemasaran produk",
+                stem: "Intan dan teman-temannya membuat minuman herbal botol berlabel \"Segar Rempah\" dengan varian jahe, kunyit, dan serai. Hasil uji coba: target pasar konsumen usia 30-50 tahun peduli kesehatan, kompetitor minuman pabrikan harga tinggi, keunggulan lebih segar, tanpa pengawet, harga terjangkau. Kelemahan: belum dikenal luas di luar sekolah.",
+                question: "Berdasarkan hasil analisis pasar tersebut, strategi pemasaran yang paling tepat untuk meningkatkan penjualan produk \"Segar Rempah\" adalah...",
+                options: [
+                    "Menjual produk di pasar tradisional dengan sistem paket beli 2 gratis 1",
+                    "Mencetak brosur yang menarik untuk meningkatkan penjualan ke warga sekolah",
+                    "Membuat video testimoni manfaat produk dan menjualnya di media sosial",
+                    "Mengganti nama produk agar terdengar lebih modern dan berbahasa asing",
+                    "Menurunkan harga hingga 50% tanpa mempertimbangkan biaya produksi"
+                ],
+                answer: 2
+            },
+            {
+                id: 7,
+                type: "pg",
+                code: "25PKWPPDPMRW14SK-000000-0496",
+                elemen: "Kegiatan Produksi, Pemasaran, dan Distribusi",
+                subelemen: "pemasaran produk",
+                stem: "Kelompok wirausaha siswa RPL mengembangkan aplikasi Android \"TASK+ EDU\" (pencatat tugas & pengingat belajar). Aplikasi sangat fokus pada UI dan fitur. Namun setelah 2 bulan hanya diunduh 57 kali. Hasil survei kecil menemukan promosi digital jarang dilakukan sehingga tidak dikenal target pasar (pelajar), serta tidak ada evaluasi/survei pengguna setelah digunakan.",
+                question: "Berdasarkan analisis terhadap strategi pemasaran pada kasus tersebut, penyebab utama dari tidak berhasilnya pemasaran produk \"TASK+EDU\" adalah...",
+                options: [
+                    "Aplikasi memiliki banyak fitur yang membingungkan pengguna terutama pelajar",
+                    "Tim terlalu fokus pada desain antarmuka dan melupakan keamanan data",
+                    "Tidak ada strategi promosi digital yang relevan dengan kebiasaan target pasar",
+                    "Aplikasi yang ditawarkan tidak bisa digunakan secara offline sehingga tidak optimal",
+                    "Desain antar muka yang tidak sesuai dengan minat pelajar sehingga tidak optimal"
+                ],
+                answer: 2
+            },
+            {
+                id: 8,
+                type: "pg",
+                code: "25PKWPPDPTPW06SK-000000-0445",
+                elemen: "Kegiatan Produksi, Pemasaran, dan Distribusi",
+                subelemen: "pengembangan prototipe produk barang/jasa",
+                stem: "Kemasan Minuman Herbal \"Jamoe Si Mbok\", Varian Beras Kencur 300 ml, Komposisi: Beras, Kencur, Gula Jawa. Baik dikonsumsi sebelum: 15 Mei 2026.",
+                question: "Dari gambar label tersebut, penerapan yang paling tepat pada kemasan produk minuman herbal \"Jamoe Si Mbok\" adalah...",
+                options: [
+                    "Menempelkan label di bagian tengah botol agar mudah dilihat oleh konsumen",
+                    "Menempatkan label di bagian bawah botol agar tidak mengganggu tampilan warna minuman",
+                    "Menempelkan label dengan posisi miring di depan dan samping botol agar lebih dikenal",
+                    "Menempelkan label di dalam botol untuk menghindari kerusakan saat pengiriman",
+                    "Label sebaiknya tidak ditempel pada produk namun ditempel di kardus kemasan botol"
+                ],
+                answer: 0
+            },
+            {
+                id: 9,
+                type: "pg",
+                code: "25PKWPPDDPBW02SK-000000-0436",
+                elemen: "Kegiatan Produksi, Pemasaran, dan Distribusi",
+                subelemen: "pengembangan desain produk barang/jasa",
+                stem: "Tim DKV membuat prototipe kemasan minuman herbal \"Wedang Rempah Saku\" untuk kalangan muda dan pekerja kantor. Desain awal menggunakan botol kaca tinggi dengan label coklat klasik. Uji pasar kecil menunjukkan konsumen menilai desain jadul, sulit dibawa, dan rawan pecah. Perlu analisis ulang desain dan kemasan.",
+                question: "Langkah yang dapat diterapkan untuk memperbaiki produk sesuai kebutuhan pasar adalah...",
+                options: [
+                    "Mengganti warna label menjadi lebih cerah dan menarik agar menarik pelanggan",
+                    "Mengganti bahan kemasan ke plastik fleksibel dan desain yang lebih kekinian",
+                    "Mengubah label produk dengan desain berwarna abu dan gambar yang menarik",
+                    "Mengganti kemasan dengan botol kaca dengan dua lapis agar lebih estetik",
+                    "Menambahkan hiasan pada botol kaca guna menambah kesan tradisional"
+                ],
+                answer: 1
+            },
+            {
+                id: 10,
+                type: "pg",
+                code: "25PKWPPDPKMW11SK-000000-0027",
+                elemen: "Kegiatan Produksi, Pemasaran, dan Distribusi",
+                subelemen: "pengemasan produk",
+                stem: "Siswa Agribisnis memproduksi keripik bayam dikemas plastik bening dengan stiker nama produk. Target pasar: remaja dan anak sekolah. Pengunjung bazar menyampaikan kemasan tidak kekinian, tidak menampilkan merek dengan jelas, serta huruf tanggal kedaluwarsa terlalu kecil.",
+                question: "Berdasarkan deskripsi tersebut, langkah analisis kemasan yang paling tepat untuk meningkatkan daya tarik produk bagi target pasar adalah...",
+                options: [
+                    "Mendesain ulang kemasan dengan warna dan ilustrasi yang menarik serta memperbesar ukuran informasi",
+                    "Mengganti kemasan plastik bening dengan toples kaca agar lebih eksklusif dan terlihat jelas tulisannya",
+                    "Menambahkan brosur informasi gizi dan manfaat bayam dalam setiap kemasan sebagai nilai edukasi",
+                    "Menyederhanakan desain kemasan dan merek produk agar biaya produksi dan harga jual lebih murah",
+                    "Menggunakan bahan kemasan kertas cokelat alami untuk menonjolkan kesan yang ramah lingkungan"
+                ],
+                answer: 0
+            },
+            {
+                id: 11,
+                type: "mcma",
+                code: "25PKWPPDPTPW05SK-000000-0044",
+                elemen: "Kegiatan Produksi, Pemasaran, dan Distribusi",
+                subelemen: "pengembangan prototipe produk barang/jasa",
+                stem: "PT Cipta Kreasi Nusantara membuat prototipe Meja Lipat 3-in-1 (rak, meja kerja, meja makan). Hasil uji coba prototipe 1: ukuran meja makan terlalu kecil & tidak proporsional, kurang stabil saat fungsi meja makan, bagian tertentu tidak kokoh menopang beban, dan sistem geser perubahan fungsi terasa berat.",
+                question: "Dari situasi tersebut, langkah manakah yang paling tepat dilakukan dalam tahapan pengembangan prototipe produk? (Pilihan jawaban benar lebih dari satu)",
+                options: [
+                    "Melakukan evaluasi pasar secara terbatas untuk mengetahui potensi minat konsumen",
+                    "Menyesuaikan kembali rancangan ukuran dan proporsi meja agar lebih ergonomis",
+                    "Meninjau kembali pemilihan bahan dan struktur sambungan untuk meningkatkan stabilitas",
+                    "Menambahkan fitur estetika agar produk terlihat lebih menarik di pasaran",
+                    "Menyempurnakan mekanisme perubahan fungsi agar lebih ringan dan mudah digunakan"
+                ],
+                answer: [1, 2, 4]
+            },
+            {
+                id: 12,
+                type: "pg",
+                code: "25PKWPPDPRDW08SK-000000-0019",
+                elemen: "Kegiatan Produksi, Pemasaran, dan Distribusi",
+                subelemen: "perencanaan produksi",
+                stem: "CV Karya Atlet Mandiri mendapat pesanan 10.000 jersey lari.\n- Biaya Tetap: Sewa gedung Rp12.000.000, Gaji 4 staf Rp16.000.000 (Total Rp28.000.000).\n- Biaya Variabel per pcs: Kain dryfit Rp22.000, Sablon Rp6.000, Jahit Rp7.000, Label/kemasan Rp5.000 (Total Rp40.000/pcs).",
+                question: "Berdasarkan data di atas, berapakah total biaya produksi jersey tersebut?",
+                options: [
+                    "Rp428.000.000,00",
+                    "Rp412.000.000,00",
+                    "Rp400.000.000,00",
+                    "Rp28.000.000,00",
+                    "Rp16.800.000,00"
+                ],
+                answer: 0
+            },
+            {
+                id: 13,
+                type: "mcma",
+                code: "25PKWPPDPPSW10SK-000000-0081",
+                elemen: "Kegiatan Produksi, Pemasaran, dan Distribusi",
+                subelemen: "proses produksi",
+                stem: "Informasi pada kemasan pembersih piring \"Bersih\":\nDiproduksi: PT CAHAYA INDONESIA | Berat bersih: 1500 ml | Exp: 10 Agustus 2026.\nCara penggunaan: Tuang 1/2 sendok cairan pembersih ke dalam mangkok berisi 1 gelas air bersih. Masukkan spons, remas sampai berbusa, cuci dan bilas.\nPeringatan: Jauhkan dari jangkauan anak-anak. Bila terkena mata, bilas dengan air bersih.",
+                question: "Berdasarkan informasi kemasan tersebut, manakah informasi yang sesuai? (Pilihan jawaban benar lebih dari satu)",
+                options: [
+                    "Perbandingan campuran adalah setengah sendok cairan dicampur dengan satu mangkok air",
+                    "Cairan pembersih ini tidak boleh digunakan langsung tanpa dicampur air",
+                    "Jika cairan terkena mata, bilaslah dengan air bersih",
+                    "Produk ini hanya boleh digunakan sebelum 10 Agustus 2027",
+                    "Saat menggunakan produk, penting untuk menjauhkan dari jangkauan anak-anak"
+                ],
+                answer: [1, 2, 4]
+            },
+            {
+                id: 14,
+                type: "mcma",
+                code: "25PKWPPDPPSW10SK-000000-0070",
+                elemen: "Kegiatan Produksi, Pemasaran, dan Distribusi",
+                subelemen: "proses produksi",
+                stem: "Pada pengecekan mutu lemari besi, ditemukan cat mengelupas akibat benturan saat pemindahan barang dari area produksi ke gudang penyimpanan, sehingga produk gagal QC.",
+                question: "Tindakan yang paling tepat untuk mengatasi dan mencegah masalah tersebut adalah... (Pilihan jawaban benar lebih dari satu)",
+                options: [
+                    "Melatih ulang petugas pemindahan barang agar lebih berhati-hati dan menggunakan teknik angkat yang tepat",
+                    "Menerapkan pelindung tambahan pada bagian yang rawan benturan selama proses pemindahan",
+                    "Mengurangi frekuensi pemindahan lemari agar mengurangi risiko kerusakan selama proses tersebut",
+                    "Meninjau dan memperbaiki prosedur pemindahan produk agar lebih aman dan efisien",
+                    "Memperketat inspeksi visual pada setiap produk sebelum dikirimkan agar pengelupasan dapat dideteksi lebih awal"
+                ],
+                answer: [0, 1, 3]
+            },
+            {
+                id: 15,
+                type: "pg",
+                code: "25PKWPPDPPSW10SK-000000-0350",
+                elemen: "Kegiatan Produksi, Pemasaran, dan Distribusi",
+                subelemen: "proses produksi",
+                stem: "Unit usaha sekolah memproduksi totebag kanvas. Saat tahap menjahit, benang sering putus dan jahitan tidak rapi. Setelah ditelusuri, ternyata benang yang digunakan terlalu tipis untuk bahan kanvas yang tebal.",
+                question: "Solusi terbaik yang dapat dilakukan untuk mengatasi masalah tersebut adalah...",
+                options: [
+                    "Mengganti bahan totebag dengan bahan kanvas yang lebih tipis",
+                    "Mengganti mesin jahit yang lebih berkualitas agar benang tidak cepat putus",
+                    "Menambahkan lem kain pada totebag agar sambungan tetap kuat dan tahan lama",
+                    "Melatih ulang murid dalam teknik menjahit yang lebih terampil dan teliti dalam menjahit",
+                    "Mengganti benang dengan jenis yang lebih tebal dan kuat sesuai karakter kanvas"
+                ],
+                answer: 4
+            },
+            {
+                id: 16,
+                type: "pg",
+                code: "25PKWPPDPPSW10SK-000000-0033",
+                elemen: "Kegiatan Produksi, Pemasaran, dan Distribusi",
+                subelemen: "proses produksi",
+                stem: "Murid farmasi merancang aromatherapy candle alami & ramah lingkungan dalam toples kaca kecil. Bahan yang tersedia: Parafin (turunan minyak bumi), Beeswax (lilin lebah), Minyak esensial (lavender, kayu putih), Pewarna sintetis, dan Bubuk kayu manis.",
+                question: "Kombinasi bahan baku mana untuk mendukung proses produksi lilin aromaterapi yang alami dan ramah lingkungan?",
+                options: [
+                    "Menggunakan parafin, pewarna sintetis, dan minyak esensial",
+                    "Menggunakan beeswax, bubuk kayu manis, dan minyak esensial",
+                    "Menggabungkan parafin, beeswax, dan pewarna sintetis",
+                    "Memadukan bubuk kayu manis, pewarna sintetis, dan parafin",
+                    "Memilih beeswax, parafin, dan pengharum ruangan kimiawi"
+                ],
+                answer: 1
+            },
+            {
+                id: 17,
+                type: "mcma",
+                code: "25PKWPPDPMTW13SK-000000-0025",
+                elemen: "Kegiatan Produksi, Pemasaran, dan Distribusi",
+                subelemen: "pengendalian mutu produk (quality assurance)",
+                stem: "Produk minuman serbuk rasa buah mengalami keluhan setelah beberapa bulan dipasarkan: bubuk menggumpal, aroma tidak segar, dan rasa berubah. Penelusuran menunjukkan bahan baku disimpan di tempat lembap dan pengemasan tanpa tahap penyaringan akhir.",
+                question: "Berdasarkan kasus tersebut, manakah tindakan yang tepat untuk perbaikan pengendalian mutu produk? (Pilihan jawaban benar lebih dari satu)",
+                options: [
+                    "Menyimpan bahan baku di tempat yang kering dan bersuhu stabil",
+                    "Mengurangi penggunaan bahan pengawet agar produk lebih alami",
+                    "Menghilangkan tahap penyaringan akhir sebelum pengemasan",
+                    "Melakukan uji kualitas secara berkala terkait aroma, rasa, dan warna",
+                    "Menambah kemasan yang lebih tebal dan kedap udara untuk melindungi produk"
+                ],
+                answer: [0, 3, 4]
+            },
+            {
+                id: 18,
+                type: "pg",
+                code: "25PKWPPDPMTW13SK-000000-0467",
+                elemen: "Kegiatan Produksi, Pemasaran, dan Distribusi",
+                subelemen: "pengendalian mutu produk (quality assurance)",
+                stem: "Kelompok Tata Busana membuat masker kain 3 lapis standar (17x9 cm). Hasil pemeriksaan 100 masker: 25 masker ditemukan cacat (ukuran tidak konsisten, hanya 2 lapis, jahitan lepas).",
+                question: "Langkah pengendalian mutu yang paling tepat untuk diterapkan berdasarkan kasus tersebut adalah...",
+                options: [
+                    "Mendistribusikan semua produk yang telah dibuat untuk efisiensi waktu",
+                    "Memperbaiki produk yang rusak setelah dikirim ke konsumen",
+                    "Mengganti standar kualitas agar lebih fleksibel dan mudah dipenuhi",
+                    "Menarik seluruh produk yang telah dipasarkan dan menghentikan produksi",
+                    "Melakukan evaluasi dan perbaikan prosedur produksi sesuai hasil inspeksi"
+                ],
+                answer: 4
+            },
+            {
+                id: 19,
+                type: "pg",
+                code: "25PKWPPDDSTW16SK-000000-0407",
+                elemen: "Kegiatan Produksi, Pemasaran, dan Distribusi",
+                subelemen: "distribusi produk",
+                stem: "Weni dan Mira memproduksi sabun cair cuci tangan dan menjualnya melalui marketplace (dikirim langsung via ekspedisi) serta menerima pesanan langsung melalui media sosial.",
+                question: "Berdasarkan informasi tersebut, jenis saluran distribusi yang digunakan adalah...",
+                options: [
+                    "Distribusi langsung",
+                    "Distribusi tidak langsung tingkat dua",
+                    "Distribusi melalui agen tunggal",
+                    "Distribusi multilevel",
+                    "Distribusi eksklusif ke toko retail besar"
+                ],
+                answer: 0
+            },
+            {
+                id: 20,
+                type: "pg",
+                code: "25PKWPGUAPUW18SK-000000-0381",
+                elemen: "Pengelolaan Usaha",
+                subelemen: "analisis peluang usaha",
+                stem: "Bengkel Solusi Cepat mengalami peningkatan permintaan layanan servis. Pemilik (Budi) mempertimbangkan menambah layanan perawatan berkala dan modifikasi kendaraan.",
+                question: "Berdasarkan ilustrasi tersebut, hal apa yang sebaiknya menjadi fokus utama Budi dalam menganalisis sumber peluang usaha?",
+                options: [
+                    "Membandingkan harga jasa modifikasi dengan bengkel besar di kota lain",
+                    "Mengandalkan tren modifikasi kendaraan yang viral di media sosial",
+                    "Menganalisis kebutuhan pelanggan dan tren pasar lokal yang berkembang",
+                    "Mengurangi jumlah mekanik untuk menekan biaya operasional",
+                    "Membeli suku cadang dalam jumlah besar untuk mendapatkan diskon"
+                ],
+                answer: 2
+            },
+            {
+                id: 21,
+                type: "pg",
+                code: "25PKWPGUPSUW20SK-000000-0377",
+                elemen: "Pengelolaan Usaha",
+                subelemen: "proposal usaha",
+                stem: "Proposal usaha Teh Herbal Daun Kelor \"Kelora\" memuat: Latar belakang/kebutuhan masyarakat, Penjelasan produk & produksi home industri, Analisis SWOT lokal, Proses produksi, dan Pemasaran media sosial/bazar.",
+                question: "Bagian proposal usaha yang perlu ditambahkan agar menjadi proposal lengkap dan layak dikaji investor adalah...",
+                options: [
+                    "Latar belakang dan nama usaha",
+                    "Strategi distribusi dan bentuk kemasan",
+                    "Rincian kebutuhan modal dan analisis keuangan",
+                    "Analisis SWOT dan profil pembimbing usaha",
+                    "Logo kemasan dan dokumentasi produksi"
+                ],
+                answer: 2
+            },
+            {
+                id: 22,
+                type: "mcma",
+                code: "25PKWPGUAPUW18SK-000000-0102",
+                elemen: "Pengelolaan Usaha",
+                subelemen: "analisis peluang usaha",
+                stem: "Business Model Canvas (BMC) \"Tirta Botani\" (Infused Water buah lokal): Value Proposition: infused water alami; Customer Segment: konsumen sehat perkotaan; Channels: Instagram & marketplace; Key Resources: buah lokal & botol kaca; Key Partner: petani buah lokal.",
+                question: "Berdasarkan BMC tersebut, manakah dari pernyataan berikut yang menunjukkan hasil analisis SWOT yang tepat? (Pilihan jawaban benar lebih dari satu)",
+                options: [
+                    "Ketersediaan buah lokal segar merupakan kekuatan dalam produksi",
+                    "Ketergantungan pada satu jalur distribusi bisa menjadi kelemahan",
+                    "Distribusi pemasaran melalui media sosial dan marketplace menjadi peluang pasar yang potensial",
+                    "Biaya kemasan botol kaca yang tinggi merupakan bagian dari strategi pemasaran",
+                    "Banyaknya pesaing dengan produk sejenis merupakan peluang untuk saling menjaga keunggulan produk"
+                ],
+                answer: [0, 1, 2]
+            },
+            {
+                id: 23,
+                type: "mcma",
+                code: "25PKWPGUAPUW18SK-000000-0052",
+                elemen: "Pengelolaan Usaha",
+                subelemen: "analisis peluang usaha",
+                stem: "Usaha minuman \"SegarKu\" (susu & buah lokal) dijalankan dari rumah dekat sekolah/perumahan padat. Pemasaran lewat media sosial. Belum punya izin resmi dan produksi masih manual. Branding nama unik mulai disukai.",
+                question: "Berdasarkan informasi tersebut, manakah dari pernyataan berikut ini yang merupakan bagian dari analisis SWOT usaha \"Segarku\"? (Pilihan jawaban benar lebih dari satu)",
+                options: [
+                    "Promosi melalui media sosial berpotensi menjangkau pelanggan yang lebih luas",
+                    "Belum memiliki izin usaha resmi merupakan ancaman/kelemahan yang harus diatasi",
+                    "Alat produksi manual membuat proses produksi menjadi kurang efisien",
+                    "Strategi branding lewat nama unik seperti \"SegarKu\" dapat menjadi kekuatan",
+                    "Lokasi yang strategis yang dekat dengan perumahan menjadi ancaman utama"
+                ],
+                answer: [0, 1, 2, 3]
+            },
+            {
+                id: 24,
+                type: "pg",
+                code: "25PKWPGUHKIW23SK-000000-0124",
+                elemen: "Pengelolaan Usaha",
+                subelemen: "HaKI",
+                stem: "Heldy menciptakan teknologi/alat penyaring air hujan menjadi air minum layak paka dengan sistem penyaringan bertingkat + arang aktif + UV sederhana. Ia mengajukan permohonan perlindungan hukum agar alatnya tidak ditiru tanpa izin.",
+                question: "Berdasarkan ilustrasi di atas, bentuk perlindungan HaKI yang paling sesuai untuk karya Heldy adalah...",
+                options: [
+                    "Hak Cipta",
+                    "Desain Industri",
+                    "Merek Dagang",
+                    "Hak Paten",
+                    "Rahasia Dagang"
+                ],
+                answer: 3
+            },
+            {
+                id: 25,
+                type: "kategori",
+                code: "25PKWPGUHKIW23SK-000000-0015",
+                elemen: "Pengelolaan Usaha",
+                subelemen: "HaKI",
+                stem: "Diah dan Sofyan merintis usaha \"Kaligrafika\" (lukisan kaligrafi digital custom). Merek dibuat aplikasi grafis dan dijual online. Mereka bermaksud melindungi karya dari penjiplakan.",
+                question: "Tentukan Benar atau Salah pernyataan berikut ini berkaitan dengan jenis dan karakteristik HaKI yang relevan.",
+                statements: [
+                    { text: "Dengan adanya hak cipta, produk Kaligrafika dapat terjamin perlindungan ciptaan karyanya.", answer: "Benar" },
+                    { text: "Merek produk dapat digunakan untuk melindungi teknik produksi perusahaan.", answer: "Salah" },
+                    { text: "Desain industri melindungi tampilan luar produk kaligrafika agar tidak ditiru.", answer: "Benar" }
+                ]
+            },
+            {
+                id: 26,
+                type: "kategori",
+                code: "25PKWPGUHKIW24SK-000000-0091",
+                elemen: "Pengelolaan Usaha",
+                subelemen: "HaKI",
+                stem: "Yuli menciptakan lagu orisinal. Ikhsan menggunakan lagu tersebut sebagai musik latar video promosi tanpa izin, memotong lagu, tidak mencantumkan nama pencipta, serta mengklaimnya sebagai karya timnya.",
+                question: "Tentukan Benar/Salah pernyataan berikut ini mengenai pelanggaran HaKI.",
+                statements: [
+                    { text: "Karya yang digunakan Ikhsan tanpa izin dan tanpa mencantumkan nama pencipta merupakan pelanggaran HaKI.", answer: "Benar" },
+                    { text: "Video yang diunggah Ikhsan sudah diedit dan tidak mirip dengan versi asli sehingga tidak termasuk pelanggaran HaKI.", answer: "Salah" },
+                    { text: "Video yang diunggah hanya digunakan oleh teman sendiri sehingga tidak perlu izin dan bukan sebagai pelanggaran.", answer: "Salah" }
+                ]
+            },
+            {
+                id: 27,
+                type: "mcma",
+                code: "25PKWPGULKUW22SK-000000-0193",
+                elemen: "Pengelolaan Usaha",
+                subelemen: "pelaporan keuangan",
+                stem: "Biaya produksi minuman UMKM:\n- Bahan baku: Rp4.000.000,00\n- Bahan kemasan & label: Rp1.200.000,00\n- Tenaga kerja langsung: Rp2.000.000,00\n- Biaya overhead: Rp800.000,00\n(Total Biaya Produksi = Rp8.000.000,00 untuk 800 botol, HPP/botol = Rp10.000,00).\nTarget Laba: 30% - 40% dari biaya produksi.",
+                question: "Berapakah harga jual per botol yang sebaiknya ditetapkan? (Pilihan jawaban benar lebih dari satu)",
+                options: [
+                    "Rp11.250,00",
+                    "Rp12.500,00",
+                    "Rp13.700,00",
+                    "Rp14.000,00",
+                    "Rp15.500,00"
+                ],
+                answer: [2, 3]
+            },
+            {
+                id: 28,
+                type: "pg",
+                code: "25PKWPGULKUW21SK-000000-0221",
+                elemen: "Pengelolaan Usaha",
+                subelemen: "pelaporan keuangan",
+                stem: "Transaksi Servis Elektronik Cahaya (Mei 2025):\n- 1 Mei: Setor modal tunai Rp15.000.000\n- 3 Mei: Bayar sewa tunai Rp1.500.000\n- 7 Mei: Terima pendapatan jasa tunai Rp6.000.000\n- 10 Mei: Beli perlengkapan tunai Rp1.000.000\n- 15 Mei: Jasa servis KREDIT Rp4.000.000 (tidak menambah kas tunai)\n- 20 Mei: Bayar gaji Rp2.000.000\n- 25 Mei: Menerima pelunasan piutang servis tunai Rp2.000.000",
+                question: "Berdasarkan transaksi tersebut, berapakah saldo akhir KAS untuk bulan Mei 2025?",
+                options: [
+                    "Rp14.500.000,00",
+                    "Rp16.500.000,00",
+                    "Rp17.000.000,00",
+                    "Rp18.500.000,00",
+                    "Rp20.000.000,00"
+                ],
+                answer: 3
+            },
+            {
+                id: 29,
+                type: "mcma",
+                code: "25PKWPGULKUW22SK-000000-0095",
+                elemen: "Pengelolaan Usaha",
+                subelemen: "pelaporan keuangan",
+                stem: "Laporan Keuangan Sablon Kaos Kreatif Muda:\nTotal Penjualan: Rp3.000.000 | HPP: Rp2.500.000 | Laba Bersih: Rp500.000 | Biaya Promosi: Rp50.000.\nCatatan: Usaha masih memiliki persediaan bahan yang menumpuk di gudang.",
+                question: "Manakah langkah tindak lanjut yang paling tepat dilakukan? (Pilihan jawaban benar lebih dari satu)",
+                options: [
+                    "Meningkatkan biaya promosi agar volume penjualan bertambah",
+                    "Menambah pembelian bahan baku baru untuk meningkatkan penjualan",
+                    "Mengoptimalkan penggunaan persediaan bahan yang masih menumpuk",
+                    "Menghentikan kegiatan produksi karena laba terlalu kecil",
+                    "Mengevaluasi harga jual atau mencari cara efisiensi produksi"
+                ],
+                answer: [0, 2, 4]
+            },
+            {
+                id: 30,
+                type: "pg",
+                code: "25PKWPGULKUW21SK-000000-0018",
+                elemen: "Pengelolaan Usaha",
+                subelemen: "pelaporan keuangan",
+                stem: "Laporan Kopi Kita bulan Mei:\n- Persediaan Awal Bahan Baku: Rp1.000.000,00\n- Pembelian Bahan Baku: Rp3.000.000,00\n- Persediaan Akhir Bahan Baku: Rp500.000,00\n(Bahan Baku terpakai = Rp3.500.000,00)\n- Pendapatan Penjualan: Rp7.500.000,00\n- Biaya Operasional (Gaji, Listrik, Sewa): Rp2.000.000,00",
+                question: "Berdasarkan data tersebut, berapakah laba bersih yang diperoleh Kopi Kita pada bulan Mei?",
+                options: [
+                    "Rp1.000.000,00",
+                    "Rp2.000.000,00",
+                    "Rp2.500.000,00",
+                    "Rp3.000.000,00",
+                    "Rp3.500.000,00"
+                ],
+                answer: 1
+            }
+        ];
+
+        // CONSTANTS & HELPER
+        const STUDENT_TOKEN = "pkwusmaransa1";
+        const TEACHER_PASSWORD = "nilaipkwusmaransa1";
+        const CLASSES_LIST = Array.from({ length: 10 }, (_, i) => `XII.${i + 1}`);
+
+        // Helper Shuffle Array
+        function shuffleArray(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // MAIN COMPONENT
+        function App() {
+            const [view, setView] = useState("login"); // login | exam | result | teacher_auth | teacher_db
+            const [studentInfo, setStudentInfo] = useState({ name: "", studentClass: "", token: "" });
+            const [questions, setQuestions] = useState([]);
+            const [currentQIndex, setCurrentQIndex] = useState(0);
+            const [userAnswers, setUserAnswers] = useState({}); // { questionId: answer }
+            const [flagged, setFlagged] = useState({}); // { questionId: boolean }
+            const [timeLeft, setTimeLeft] = useState(60 * 60); // 60 mins in seconds
+            const [examStartTime, setExamStartTime] = useState(null);
+            const [examEndTime, setExamEndTime] = useState(null);
+            const [lastScoreResult, setLastScoreResult] = useState(null);
+            const [errorMessage, setErrorMessage] = useState("");
+
+            // Database state (stored in localStorage)
+            const [dbRecords, setDbRecords] = useState(() => {
+                const saved = localStorage.getItem("smaransa_pkwu_db");
+                if (saved) {
+                    try { return JSON.parse(saved); } catch (e) { return []; }
+                }
+                return [
+                    { id: 1, name: "Ahmad Rizky", studentClass: "XII.1", score: 87, date: "2026-03-01 08:30", correctCount: 26, totalCount: 30 },
+                    { id: 2, name: "Siti Nurhaliza", studentClass: "XII.2", score: 93, date: "2026-03-01 08:45", correctCount: 28, totalCount: 30 },
+                    { id: 3, name: "Budi Santoso", studentClass: "XII.1", score: 70, date: "2026-03-01 09:00", correctCount: 21, totalCount: 30 }
+                ];
+            });
+
+            // Save DB to localStorage
+            useEffect(() => {
+                localStorage.setItem("smaransa_pkwu_db", JSON.stringify(dbRecords));
+            }, [dbRecords]);
+
+            // Timer Hook
+            useEffect(() => {
+                let timer = null;
+                if (view === "exam" && timeLeft > 0) {
+                    timer = setInterval(() => {
+                        setTimeLeft(prev => {
+                            if (prev <= 1) {
+                                clearInterval(timer);
+                                handleSubmitExam(true);
+                                return 0;
+                            }
+                            return prev - 1;
+                        });
+                    }, 1000);
+                }
+                return () => clearInterval(timer);
+            }, [view, timeLeft]);
+
+            // Handle Start Exam
+            const handleStartExam = (e) => {
+                e.preventDefault();
+                setErrorMessage("");
+                if (!studentInfo.name.trim()) {
+                    setErrorMessage("Nama lengkap wajib diisi!");
+                    return;
+                }
+                if (!studentInfo.studentClass) {
+                    setErrorMessage("Pilih kelas terlebih dahulu!");
+                    return;
+                }
+                if (studentInfo.token.trim().toLowerCase() !== STUDENT_TOKEN) {
+                    setErrorMessage("Token ujian salah! Gunakan token: pkwusmaransa1");
+                    return;
+                }
+
+                // Randomize questions order
+                const shuffled = shuffleArray(MASTER_QUESTIONS);
+                setQuestions(shuffled);
+                setUserAnswers({});
+                setFlagged({});
+                setCurrentQIndex(0);
+                setTimeLeft(60 * 60); // 60 Mins
+                setExamStartTime(new Date());
+                setView("exam");
+            };
+
+            // Calculate Score
+            const calculateResult = () => {
+                let correctPoints = 0;
+
+                questions.forEach(q => {
+                    const uAns = userAnswers[q.id];
+                    if (!uAns) return;
+
+                    if (q.type === "pg") {
+                        if (uAns === q.answer) correctPoints++;
+                    } else if (q.type === "mcma") {
+                        // uAns is array of selected indices
+                        if (Array.isArray(uAns)) {
+                            const sortedU = [...uAns].sort().join(",");
+                            const sortedA = [...q.answer].sort().join(",");
+                            if (sortedU === sortedA) correctPoints++;
+                        }
+                    } else if (q.type === "kategori") {
+                        // uAns is object { statementIndex: "Benar" | "Salah" }
+                        let allCorrect = true;
+                        q.statements.forEach((st, idx) => {
+                            if (uAns[idx] !== st.answer) allCorrect = false;
+                        });
+                        if (allCorrect) correctPoints++;
+                    }
+                });
+
+                const finalScore = Math.round((correctPoints / questions.length) * 100);
+                return {
+                    correctCount: correctPoints,
+                    totalCount: questions.length,
+                    score: finalScore
+                };
+            };
+
+            // Submit Exam
+            const handleSubmitExam = (auto = false) => {
+                if (!auto && !window.confirm("Apakah Anda yakin ingin menyelesaikan Ujian Try Out ini?")) {
+                    return;
+                }
+                const now = new Date();
+                setExamEndTime(now);
+
+                const res = calculateResult();
+                setLastScoreResult(res);
+
+                // Save to DB
+                const newRecord = {
+                    id: Date.now(),
+                    name: studentInfo.name.trim(),
+                    studentClass: studentInfo.studentClass,
+                    score: res.score,
+                    correctCount: res.correctCount,
+                    totalCount: res.totalCount,
+                    date: now.toLocaleString("id-ID")
+                };
+
+                setDbRecords(prev => [newRecord, ...prev]);
+                setView("result");
+            };
+
+            // Format Timer (MM:SS)
+            const formatTime = (seconds) => {
+                const m = Math.floor(seconds / 60);
+                const s = seconds % 60;
+                return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+            };
+
+            return (
+                <div className="min-h-screen flex flex-col justify-between">
+                    {/* Header */}
+                    <header className="bg-gradient-to-r from-blue-900 via-indigo-900 to-blue-800 text-white shadow-lg sticky top-0 z-40">
+                        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+                            <div className="flex items-center space-x-3">
+                                <div className="bg-white/10 p-2 rounded-lg backdrop-blur-sm border border-white/20">
+                                    <svg className="w-7 h-7 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 14l9-5-9-5-9 5 9 5z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0112 20.055a11.952 11.952 0 01-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h1 className="text-lg md:text-xl font-bold tracking-tight">TRY OUT TKA PKWU 2025</h1>
+                                    <p className="text-xs text-blue-200 font-medium">SMAN 1 Randublatung • Produk & Kewirausahaan</p>
+                                </div>
+                            </div>
+
+                            {view === "exam" ? (
+                                <div className="flex items-center space-x-3">
+                                    <div className={`px-3 py-1.5 rounded-lg font-mono font-bold text-sm md:text-base flex items-center space-x-2 border shadow-inner ${timeLeft < 300 ? 'bg-red-500/20 text-red-300 border-red-500/50 animate-pulse' : 'bg-black/30 text-yellow-300 border-white/20'}`}>
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        <span>{formatTime(timeLeft)}</span>
+                                    </div>
+                                    <button
+                                        onClick={() => handleSubmitExam(false)}
+                                        className="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs md:text-sm px-3 py-1.5 rounded-lg transition shadow flex items-center space-x-1"
+                                    >
+                                        <span>Selesai</span>
+                                    </button>
+                                </div>
+                            ) : (
+                                <div className="flex items-center space-x-2">
+                                    {view !== "teacher_db" ? (
+                                        <button
+                                            onClick={() => setView("teacher_auth")}
+                                            className="bg-white/10 hover:bg-white/20 text-blue-100 border border-white/20 text-xs md:text-sm px-3 py-1.5 rounded-lg font-medium transition flex items-center space-x-1"
+                                        >
+                                            <svg className="w-4 h-4 text-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 12h14M12 5l7 7-7 7" />
+                                            </svg>
+                                            <span>Portal Guru</span>
+                                        </button>
+                                    ) : (
+                                        <button
+                                            onClick={() => setView("login")}
+                                            className="bg-white/10 hover:bg-white/20 text-blue-100 border border-white/20 text-xs md:text-sm px-3 py-1.5 rounded-lg font-medium transition"
+                                        >
+                                            Halaman Siswa
+                                        </button>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    </header>
+
+                    {/* Content Views */}
+                    <main className="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6">
+                        {view === "login" && (
+                            <LoginView
+                                studentInfo={studentInfo}
+                                setStudentInfo={setStudentInfo}
+                                handleStartExam={handleStartExam}
+                                errorMessage={errorMessage}
+                            />
+                        )}
+
+                        {view === "exam" && (
+                            <ExamView
+                                questions={questions}
+                                currentQIndex={currentQIndex}
+                                setCurrentQIndex={setCurrentQIndex}
+                                userAnswers={userAnswers}
+                                setUserAnswers={setUserAnswers}
+                                flagged={flagged}
+                                setFlagged={setFlagged}
+                                handleSubmitExam={() => handleSubmitExam(false)}
+                                studentInfo={studentInfo}
+                            />
+                        )}
+
+                        {view === "result" && (
+                            <ResultView
+                                studentInfo={studentInfo}
+                                lastScoreResult={lastScoreResult}
+                                questions={questions}
+                                userAnswers={userAnswers}
+                                onRestart={() => setView("login")}
+                            />
+                        )}
+
+                        {view === "teacher_auth" && (
+                            <TeacherAuthView
+                                onSuccess={() => setView("teacher_db")}
+                                onCancel={() => setView("login")}
+                            />
+                        )}
+
+                        {view === "teacher_db" && (
+                            <TeacherDbView
+                                dbRecords={dbRecords}
+                                setDbRecords={setDbRecords}
+                                onBackToHome={() => setView("login")}
+                            />
+                        )}
+                    </main>
+
+                    {/* Footer */}
+                    <footer className="bg-slate-900 text-slate-400 text-xs py-4 text-center border-t border-slate-800">
+                        <p>© 2025 SMAN 1 Randublatung - Tim Kurikulum PKWU. All rights reserved.</p>
+                        <p className="mt-0.5 text-slate-500">Tes Kemampuan Akademik (TKA) Standar Kurikulum Merdeka</p>
+                    </footer>
+                </div>
+            );
+        }
+
+        // 1. LOGIN VIEW
+        function LoginView({ studentInfo, setStudentInfo, handleStartExam, errorMessage }) {
+            return (
+                <div className="max-w-md mx-auto my-6 md:my-12">
+                    <div className="bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden">
+                        <div className="bg-gradient-to-r from-blue-700 to-indigo-800 p-6 text-white text-center">
+                            <div className="inline-block bg-white/10 p-3 rounded-full mb-3 backdrop-blur-sm border border-white/20">
+                                <svg className="w-10 h-10 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                </svg>
+                            </div>
+                            <h2 className="text-xl font-bold">Mulai Try Out TKA</h2>
+                            <p className="text-xs text-blue-200 mt-1">Masukan Identitas Peserta Ujian SMAN 1 Randublatung</p>
+                        </div>
+
+                        <form onSubmit={handleStartExam} className="p-6 space-y-4">
+                            {errorMessage && (
+                                <div className="bg-red-50 border-l-4 border-red-500 text-red-700 p-3 rounded text-xs flex items-center space-x-2">
+                                    <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                    </svg>
+                                    <span>{errorMessage}</span>
+                                </div>
+                            )}
+
+                            <div>
+                                <label className="block text-xs font-semibold text-slate-700 uppercase mb-1">Nama Lengkap Siswa</label>
+                                <input
+                                    type="text"
+                                    required
+                                    placeholder="Contoh: Budi Prasetyo"
+                                    value={studentInfo.name}
+                                    onChange={(e) => setStudentInfo({ ...studentInfo, name: e.target.value })}
+                                    className="w-full px-3.5 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-600 focus:border-blue-600 outline-none transition"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-xs font-semibold text-slate-700 uppercase mb-1">Kelas</label>
+                                <select
+                                    required
+                                    value={studentInfo.studentClass}
+                                    onChange={(e) => setStudentInfo({ ...studentInfo, studentClass: e.target.value })}
+                                    className="w-full px-3.5 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-600 focus:border-blue-600 outline-none transition bg-white"
+                                >
+                                    <option value="">-- Pilih Kelas --</option>
+                                    {CLASSES_LIST.map((cls) => (
+                                        <option key={cls} value={cls}>{cls}</option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            <div>
+                                <label className="block text-xs font-semibold text-slate-700 uppercase mb-1">Token Ujian</label>
+                                <input
+                                    type="password"
+                                    required
+                                    placeholder="Masukan token dari pengawas"
+                                    value={studentInfo.token}
+                                    onChange={(e) => setStudentInfo({ ...studentInfo, token: e.target.value })}
+                                    className="w-full px-3.5 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-600 focus:border-blue-600 outline-none transition font-mono"
+                                />
+                                <p className="text-[11px] text-slate-500 mt-1 italic">*Petunjuk Token: pkwusmaransa1</p>
+                            </div>
+
+                            <div className="bg-blue-50 p-3.5 rounded-lg border border-blue-100 text-xs text-blue-900 space-y-1">
+                                <div className="font-semibold flex items-center space-x-1">
+                                    <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <span>Aturan Pengerjaan:</span>
+                                </div>
+                                <ul className="list-disc list-inside space-y-0.5 text-slate-600 pl-1">
+                                    <li>Jumlah Soal: 30 Nomor (Acak)</li>
+                                    <li>Waktu Pengerjaan: 60 Menit</li>
+                                    <li>Tipe Soal: PG, PG Kompleks, Benar/Salah</li>
+                                </ul>
+                            </div>
+
+                            <button
+                                type="submit"
+                                className="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 rounded-lg shadow-md transition transform active:scale-[0.99] text-sm flex items-center justify-center space-x-2"
+                            >
+                                <span>Mulai Kerjakan Soal</span>
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            );
+        }
+
+        // 2. EXAM VIEW
+        function ExamView({ questions, currentQIndex, setCurrentQIndex, userAnswers, setUserAnswers, flagged, setFlagged, handleSubmitExam, studentInfo }) {
+            const q = questions[currentQIndex];
+            if (!q) return null;
+
+            const isFlagged = !!flagged[q.id];
+
+            // Handle Answer Changes
+            const handlePgSelect = (index) => {
+                setUserAnswers({ ...userAnswers, [q.id]: index });
+            };
+
+            const handleMcmaToggle = (index) => {
+                const current = userAnswers[q.id] || [];
+                let updated;
+                if (current.includes(index)) {
+                    updated = current.filter(i => i !== index);
+                } else {
+                    updated = [...current, index];
+                }
+                setUserAnswers({ ...userAnswers, [q.id]: updated });
+            };
+
+            const handleKategoriSelect = (stIndex, val) => {
+                const current = userAnswers[q.id] || {};
+                const updated = { ...current, [stIndex]: val };
+                setUserAnswers({ ...userAnswers, [q.id]: updated });
+            };
+
+            const toggleFlag = () => {
+                setFlagged({ ...flagged, [q.id]: !isFlagged });
+            };
+
+            return (
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                    {/* Left Panel: Question Content (3 cols) */}
+                    <div className="lg:col-span-3 space-y-4">
+                        <div className="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden">
+                            {/* Question Header Badge */}
+                            <div className="bg-slate-50 px-6 py-3 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2">
+                                <div className="flex items-center space-x-2">
+                                    <span className="bg-blue-700 text-white font-bold px-3 py-1 rounded-md text-sm">
+                                        Soal No. {currentQIndex + 1} / {questions.length}
+                                    </span>
+                                    <span className="bg-slate-200 text-slate-700 text-xs font-semibold px-2.5 py-1 rounded-md uppercase">
+                                        {q.type === 'pg' && 'Pilihan Ganda'}
+                                        {q.type === 'mcma' && 'PG Kompleks (Jawaban > 1)'}
+                                        {q.type === 'kategori' && 'Benar / Salah'}
+                                    </span>
+                                </div>
+                                <button
+                                    onClick={toggleFlag}
+                                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1.5 transition ${isFlagged ? 'bg-amber-500 text-white shadow' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+                                >
+                                    <svg className="w-4 h-4" fill={isFlagged ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />
+                                    </svg>
+                                    <span>Ragu-Ragu</span>
+                                </button>
+                            </div>
+
+                            {/* Stem & Context Body */}
+                            <div className="p-6 space-y-4">
+                                <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                                    {q.elemen} • {q.subelemen}
+                                </div>
+
+                                {q.stem && (
+                                    <div className="bg-slate-50 border-l-4 border-blue-600 p-4 rounded-r-lg text-sm text-slate-800 leading-relaxed font-medium">
+                                        {q.stem}
+                                    </div>
+                                )}
+
+                                <div className="text-base font-semibold text-slate-900 leading-snug">
+                                    {q.question}
+                                </div>
+
+                                {/* Answers Rendering Based on Type */}
+                                <div className="pt-2">
+                                    {/* 1. SINGLE CHOICE (PG) */}
+                                    {q.type === "pg" && (
+                                        <div className="space-y-2.5">
+                                            {q.options.map((opt, idx) => {
+                                                const selected = userAnswers[q.id] === idx;
+                                                const label = String.fromCharCode(65 + idx);
+                                                return (
+                                                    <div
+                                                        key={idx}
+                                                        onClick={() => handlePgSelect(idx)}
+                                                        className={`p-3.5 rounded-xl border-2 transition cursor-pointer flex items-start space-x-3 ${selected ? 'border-blue-600 bg-blue-50/60 shadow-sm' : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50'}`}
+                                                    >
+                                                        <span className={`w-7 h-7 rounded-lg text-xs font-bold flex items-center justify-center flex-shrink-0 transition ${selected ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-600'}`}>
+                                                            {label}
+                                                        </span>
+                                                        <span className="text-sm text-slate-800 font-medium pt-0.5 leading-snug">
+                                                            {opt}
+                                                        </span>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    )}
+
+                                    {/* 2. MULTIPLE CHOICE MULTIPLE ANSWER (MCMA) */}
+                                    {q.type === "mcma" && (
+                                        <div className="space-y-2.5">
+                                            {q.options.map((opt, idx) => {
+                                                const currentArr = userAnswers[q.id] || [];
+                                                const isChecked = currentArr.includes(idx);
+                                                return (
+                                                    <div
+                                                        key={idx}
+                                                        onClick={() => handleMcmaToggle(idx)}
+                                                        className={`p-3.5 rounded-xl border-2 transition cursor-pointer flex items-start space-x-3 ${isChecked ? 'border-indigo-600 bg-indigo-50/60 shadow-sm' : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50'}`}
+                                                    >
+                                                        <div className={`w-5 h-5 rounded border flex items-center justify-center mt-0.5 transition ${isChecked ? 'bg-indigo-600 border-indigo-600 text-white' : 'border-slate-400 bg-white'}`}>
+                                                            {isChecked && (
+                                                                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
+                                                                </svg>
+                                                            )}
+                                                        </div>
+                                                        <span className="text-sm text-slate-800 font-medium leading-snug">
+                                                            {opt}
+                                                        </span>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    )}
+
+                                    {/* 3. CATEGORY / BENAR-SALAH */}
+                                    {q.type === "kategori" && (
+                                        <div className="overflow-x-auto border border-slate-200 rounded-xl">
+                                            <table className="w-full text-left text-sm">
+                                                <thead className="bg-slate-100 text-slate-700 text-xs uppercase font-bold">
+                                                    <tr>
+                                                        <th className="p-3.5">Pernyataan Evaluasi</th>
+                                                        <th className="p-3.5 w-24 text-center">Benar</th>
+                                                        <th className="p-3.5 w-24 text-center">Salah</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody className="divide-y divide-slate-200">
+                                                    {q.statements.map((st, idx) => {
+                                                        const userVal = (userAnswers[q.id] || {})[idx];
+                                                        return (
+                                                            <tr key={idx} className="hover:bg-slate-50">
+                                                                <td className="p-3.5 font-medium text-slate-800 leading-snug">
+                                                                    {st.text}
+                                                                </td>
+                                                                <td className="p-3.5 text-center">
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => handleKategoriSelect(idx, "Benar")}
+                                                                        className={`w-16 py-1.5 text-xs font-bold rounded-lg border transition ${userVal === "Benar" ? 'bg-emerald-600 text-white border-emerald-600 shadow' : 'bg-white border-slate-300 text-slate-600 hover:bg-slate-100'}`}
+                                                                    >
+                                                                        Benar
+                                                                    </button>
+                                                                </td>
+                                                                <td className="p-3.5 text-center">
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => handleKategoriSelect(idx, "Salah")}
+                                                                        className={`w-16 py-1.5 text-xs font-bold rounded-lg border transition ${userVal === "Salah" ? 'bg-rose-600 text-white border-rose-600 shadow' : 'bg-white border-slate-300 text-slate-600 hover:bg-slate-100'}`}
+                                                                    >
+                                                                        Salah
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        );
+                                                    })}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Footer Navigation Buttons */}
+                            <div className="bg-slate-50 px-6 py-4 border-t border-slate-200 flex items-center justify-between">
+                                <button
+                                    disabled={currentQIndex === 0}
+                                    onClick={() => setCurrentQIndex(prev => prev - 1)}
+                                    className="px-4 py-2 border border-slate-300 text-slate-700 bg-white font-semibold text-xs md:text-sm rounded-lg hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition flex items-center space-x-1"
+                                >
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+                                    </svg>
+                                    <span>Sebelumnya</span>
+                                </button>
+
+                                {currentQIndex < questions.length - 1 ? (
+                                    <button
+                                        onClick={() => setCurrentQIndex(prev => prev + 1)}
+                                        className="px-5 py-2 bg-blue-700 hover:bg-blue-800 text-white font-semibold text-xs md:text-sm rounded-lg shadow transition flex items-center space-x-1"
+                                    >
+                                        <span>Selanjutnya</span>
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                                        </svg>
+                                    </button>
+                                ) : (
+                                    <button
+                                        onClick={handleSubmitExam}
+                                        className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs md:text-sm rounded-lg shadow-md transition"
+                                    >
+                                        Kumpulkan Ujian
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Right Panel: Question Map & Student Info (1 col) */}
+                    <div className="space-y-4">
+                        {/* Student Badge */}
+                        <div className="bg-white p-4 rounded-xl shadow-md border border-slate-200">
+                            <div className="text-xs text-slate-400 font-semibold uppercase">Peserta Ujian</div>
+                            <div className="text-base font-bold text-slate-800 truncate">{studentInfo.name}</div>
+                            <div className="text-xs text-blue-700 font-medium mt-0.5">Kelas: {studentInfo.studentClass}</div>
+                        </div>
+
+                        {/* Navigation Grid */}
+                        <div className="bg-white p-4 rounded-xl shadow-md border border-slate-200">
+                            <h3 className="text-xs font-bold text-slate-700 uppercase mb-3 flex items-center justify-between">
+                                <span>Peta Nomor Soal</span>
+                                <span className="text-[10px] text-slate-400 font-normal">30 Nomor</span>
+                            </h3>
+
+                            <div className="grid grid-cols-5 gap-2 max-h-80 overflow-y-auto p-1">
+                                {questions.map((qItem, idx) => {
+                                    const uAns = userAnswers[qItem.id];
+                                    let isAnswered = false;
+                                    if (qItem.type === "pg") {
+                                        isAnswered = uAns !== undefined;
+                                    } else if (qItem.type === "mcma") {
+                                        isAnswered = Array.isArray(uAns) && uAns.length > 0;
+                                    } else if (qItem.type === "kategori") {
+                                        isAnswered = uAns && Object.keys(uAns).length === qItem.statements.length;
+                                    }
+
+                                    const isFlag = !!flagged[qItem.id];
+                                    const isCurrent = currentQIndex === idx;
+
+                                    let bgClass = "bg-slate-100 text-slate-700 hover:bg-slate-200 border-slate-200";
+                                    if (isFlag) {
+                                        bgClass = "bg-amber-500 text-white border-amber-500 font-bold shadow-sm";
+                                    } else if (isAnswered) {
+                                        bgClass = "bg-blue-700 text-white border-blue-700 font-bold";
+                                    }
+
+                                    return (
+                                        <button
+                                            key={qItem.id}
+                                            onClick={() => setCurrentQIndex(idx)}
+                                            className={`h-9 w-full rounded-lg text-xs font-bold border transition flex items-center justify-center relative ${bgClass} ${isCurrent ? 'ring-2 ring-offset-2 ring-blue-600 scale-105' : ''}`}
+                                        >
+                                            {idx + 1}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+
+                            {/* Legend */}
+                            <div className="mt-4 pt-3 border-t border-slate-100 space-y-1.5 text-[11px] text-slate-600">
+                                <div className="flex items-center space-x-2">
+                                    <div className="w-3 h-3 bg-blue-700 rounded"></div>
+                                    <span>Sudah Dijawab</span>
+                                </div>
+                                <div className="flex items-center space-x-2">
+                                    <div className="w-3 h-3 bg-amber-500 rounded"></div>
+                                    <span>Ragu-Ragu</span>
+                                </div>
+                                <div className="flex items-center space-x-2">
+                                    <div className="w-3 h-3 bg-slate-100 border border-slate-300 rounded"></div>
+                                    <span>Belum Dijawab</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // 3. RESULT VIEW
+        function ResultView({ studentInfo, lastScoreResult, questions, userAnswers, onRestart }) {
+            const [showReview, setShowReview] = useState(false);
+
+            if (!lastScoreResult) return null;
+
+            const { score, correctCount, totalCount } = lastScoreResult;
+
+            return (
+                <div className="max-w-3xl mx-auto space-y-6 my-4">
+                    {/* Score Card */}
+                    <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden text-center">
+                        <div className="bg-gradient-to-r from-blue-900 via-indigo-900 to-blue-800 p-8 text-white relative">
+                            <span className="bg-yellow-400 text-slate-900 font-bold text-xs uppercase px-3 py-1 rounded-full tracking-wider">
+                                Hasil Try Out Selesai
+                            </span>
+                            <h2 className="text-2xl font-bold mt-2">{studentInfo.name}</h2>
+                            <p className="text-sm text-blue-200 font-medium">Kelas: {studentInfo.studentClass} • SMAN 1 Randublatung</p>
+
+                            <div className="mt-6 inline-flex flex-col items-center justify-center bg-white/10 border border-white/20 rounded-2xl p-6 backdrop-blur-md min-w-[200px]">
+                                <span className="text-xs uppercase text-blue-200 font-semibold tracking-widest">Skor Akhir</span>
+                                <span className="text-6xl font-black text-yellow-300 my-1">{score}</span>
+                                <span className="text-xs text-blue-100 font-medium">Skala 0 - 100</span>
+                            </div>
+                        </div>
+
+                        <div className="p-6 bg-slate-50 border-b border-slate-200 grid grid-cols-2 md:grid-cols-3 gap-4 text-center">
+                            <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                                <div className="text-xs text-slate-500 font-semibold uppercase">Jawaban Benar</div>
+                                <div className="text-2xl font-extrabold text-emerald-600 mt-0.5">{correctCount} <span className="text-xs text-slate-400 font-normal">/ {totalCount}</span></div>
+                            </div>
+                            <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                                <div className="text-xs text-slate-500 font-semibold uppercase">Jawaban Salah</div>
+                                <div className="text-2xl font-extrabold text-rose-600 mt-0.5">{totalCount - correctCount} <span className="text-xs text-slate-400 font-normal">/ {totalCount}</span></div>
+                            </div>
+                            <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm col-span-2 md:col-span-1">
+                                <div className="text-xs text-slate-500 font-semibold uppercase">Akurasi</div>
+                                <div className="text-2xl font-extrabold text-blue-600 mt-0.5">{Math.round((correctCount / totalCount) * 100)}%</div>
+                            </div>
+                        </div>
+
+                        <div className="p-6 flex flex-wrap justify-center gap-3">
+                            <button
+                                onClick={() => setShowReview(!showReview)}
+                                className="bg-slate-800 hover:bg-slate-900 text-white font-semibold text-sm px-5 py-2.5 rounded-lg shadow transition flex items-center space-x-2"
+                            >
+                                <svg className="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                </svg>
+                                <span>{showReview ? 'Sembunyikan Pembahasan' : 'Lihat Pembahasan Soal'}</span>
+                            </button>
+
+                            <button
+                                onClick={onRestart}
+                                className="bg-blue-700 hover:bg-blue-800 text-white font-semibold text-sm px-5 py-2.5 rounded-lg shadow transition flex items-center space-x-1"
+                            >
+                                <span>Kembali ke Halaman Depan</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Pembahasan Section */}
+                    {showReview && (
+                        <div className="space-y-4">
+                            <h3 className="text-lg font-bold text-slate-800 flex items-center space-x-2">
+                                <svg className="w-5 h-5 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                <span>Review & Pembahasan Kunci Jawaban</span>
+                            </h3>
+
+                            {questions.map((q, idx) => {
+                                const uAns = userAnswers[q.id];
+                                let isCorrect = false;
+
+                                if (q.type === "pg") {
+                                    isCorrect = uAns === q.answer;
+                                } else if (q.type === "mcma") {
+                                    if (Array.isArray(uAns)) {
+                                        isCorrect = [...uAns].sort().join(",") === [...q.answer].sort().join(",");
+                                    }
+                                } else if (q.type === "kategori") {
+                                    if (uAns) {
+                                        isCorrect = q.statements.every((st, sIdx) => uAns[sIdx] === st.answer);
+                                    }
+                                }
+
+                                return (
+                                    <div key={q.id} className={`p-5 rounded-xl border bg-white shadow-sm space-y-3 ${isCorrect ? 'border-emerald-300' : 'border-rose-300'}`}>
+                                        <div className="flex items-center justify-between">
+                                            <span className="font-bold text-xs bg-slate-100 text-slate-700 px-2.5 py-1 rounded">
+                                                No. {idx + 1} ({q.code})
+                                            </span>
+                                            <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${isCorrect ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}`}>
+                                                {isCorrect ? '✓ Jawaban Tepat' : '✗ Jawaban Belum Tepat'}
+                                            </span>
+                                        </div>
+
+                                        <p className="text-sm font-semibold text-slate-800">{q.question}</p>
+
+                                        {/* PG Review */}
+                                        {q.type === "pg" && (
+                                            <div className="text-xs space-y-1 bg-slate-50 p-3 rounded-lg border border-slate-200">
+                                                <div><span className="font-semibold text-slate-600">Jawaban Anda:</span> <span className={isCorrect ? 'text-emerald-700 font-bold' : 'text-rose-700 font-bold'}>{uAns !== undefined ? `${String.fromCharCode(65 + uAns)}. ${q.options[uAns]}` : '(Tidak dijawab)'}</span></div>
+                                                <div><span className="font-semibold text-slate-600">Kunci Jawaban:</span> <span className="text-emerald-700 font-bold">{String.fromCharCode(65 + q.answer)}. {q.options[q.answer]}</span></div>
+                                            </div>
+                                        )}
+
+                                        {/* MCMA Review */}
+                                        {q.type === "mcma" && (
+                                            <div className="text-xs space-y-1 bg-slate-50 p-3 rounded-lg border border-slate-200">
+                                                <div><span className="font-semibold text-slate-600">Jawaban Anda:</span> <span className="font-bold">{Array.isArray(uAns) && uAns.length > 0 ? uAns.map(i => q.options[i]).join("; ") : '(Tidak dijawab)'}</span></div>
+                                                <div><span className="font-semibold text-slate-600">Kunci Jawaban:</span> <span className="text-emerald-700 font-bold">{q.answer.map(i => q.options[i]).join("; ")}</span></div>
+                                            </div>
+                                        )}
+
+                                        {/* Kategori Review */}
+                                        {q.type === "kategori" && (
+                                            <div className="text-xs space-y-1 bg-slate-50 p-3 rounded-lg border border-slate-200">
+                                                <table className="w-full text-left">
+                                                    <thead>
+                                                        <tr className="border-b text-slate-500 font-bold">
+                                                            <th className="pb-1">Pernyataan</th>
+                                                            <th className="pb-1 w-20">Anda</th>
+                                                            <th className="pb-1 w-20">Kunci</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody className="divide-y divide-slate-200">
+                                                        {q.statements.map((st, sIdx) => {
+                                                            const uVal = (uAns || {})[sIdx] || '-';
+                                                            return (
+                                                                <tr key={sIdx}>
+                                                                    <td className="py-1 font-medium text-slate-700">{st.text}</td>
+                                                                    <td className={`py-1 font-bold ${uVal === st.answer ? 'text-emerald-600' : 'text-rose-600'}`}>{uVal}</td>
+                                                                    <td className="py-1 font-bold text-emerald-700">{st.answer}</td>
+                                                                </tr>
+                                                            );
+                                                        })}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        )}
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        // 4. TEACHER AUTH VIEW
+        function TeacherAuthView({ onSuccess, onCancel }) {
+            const [pass, setPass] = useState("");
+            const [err, setErr] = useState("");
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                if (pass === TEACHER_PASSWORD) {
+                    onSuccess();
+                } else {
+                    setErr("Kata sandi guru salah!");
+                }
+            };
+
+            return (
+                <div className="max-w-md mx-auto my-12">
+                    <div className="bg-white rounded-2xl shadow-xl border border-slate-200 p-6 space-y-4">
+                        <div className="text-center">
+                            <div className="inline-block bg-blue-100 p-3 rounded-full mb-2">
+                                <svg className="w-8 h-8 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
+                            </div>
+                            <h2 className="text-lg font-bold text-slate-800">Akses Portal Guru / Admin</h2>
+                            <p className="text-xs text-slate-500">Masukan kata sandi khusus untuk melihat rekap nilai siswa</p>
+                        </div>
+
+                        {err && (
+                            <div className="bg-red-50 text-red-700 p-3 rounded text-xs text-center font-medium border border-red-200">
+                                {err}
+                            </div>
+                        )}
+
+                        <form onSubmit={handleSubmit} className="space-y-4">
+                            <div>
+                                <label className="block text-xs font-semibold text-slate-700 uppercase mb-1">Kata Sandi Guru</label>
+                                <input
+                                    type="password"
+                                    required
+                                    placeholder="Masukan kata sandi"
+                                    value={pass}
+                                    onChange={(e) => setPass(e.target.value)}
+                                    className="w-full px-3.5 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-600 outline-none"
+                                />
+                                <p className="text-[11px] text-slate-400 mt-1 italic">*Kata Sandi Default: nilaipkwusmaransa1</p>
+                            </div>
+
+                            <div className="flex space-x-2">
+                                <button
+                                    type="button"
+                                    onClick={onCancel}
+                                    className="w-1/2 py-2.5 border border-slate-300 text-slate-600 rounded-lg text-sm font-medium hover:bg-slate-50 transition"
+                                >
+                                    Batal
+                                </button>
+                                <button
+                                    type="submit"
+                                    className="w-1/2 py-2.5 bg-blue-700 hover:bg-blue-800 text-white rounded-lg text-sm font-bold shadow transition"
+                                >
+                                    Masuk Database
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            );
+        }
+
+        // 5. TEACHER DATABASE VIEW
+        function TeacherDbView({ dbRecords, setDbRecords, onBackToHome }) {
+            const [selectedClass, setSelectedClass] = useState("ALL");
+            const [sortBy, setSortBy] = useState("NAME_ASC"); // NAME_ASC, NAME_DESC, SCORE_HIGH, SCORE_LOW, DATE_DESC
+            const [searchQuery, setSearchQuery] = useState("");
+
+            // Filter & Sort Logic
+            const filteredRecords = useMemo(() => {
+                let records = [...dbRecords];
+
+                if (selectedClass !== "ALL") {
+                    records = records.filter(r => r.studentClass === selectedClass);
+                }
+
+                if (searchQuery.trim()) {
+                    const q = searchQuery.toLowerCase();
+                    records = records.filter(r => r.name.toLowerCase().includes(q));
+                }
+
+                records.sort((a, b) => {
+                    if (sortBy === "NAME_ASC") return a.name.localeCompare(b.name);
+                    if (sortBy === "NAME_DESC") return b.name.localeCompare(a.name);
+                    if (sortBy === "SCORE_HIGH") return b.score - a.score;
+                    if (sortBy === "SCORE_LOW") return a.score - b.score;
+                    if (sortBy === "DATE_DESC") return b.id - a.id;
+                    return 0;
+                });
+
+                return records;
+            }, [dbRecords, selectedClass, sortBy, searchQuery]);
+
+            // School Metrics
+            const schoolAvg = useMemo(() => {
+                if (dbRecords.length === 0) return 0;
+                const total = dbRecords.reduce((acc, r) => acc + r.score, 0);
+                return Math.round(total / dbRecords.length);
+            }, [dbRecords]);
+
+            const highestScore = useMemo(() => {
+                if (dbRecords.length === 0) return 0;
+                return Math.max(...dbRecords.map(r => r.score));
+            }, [dbRecords]);
+
+            const lowestScore = useMemo(() => {
+                if (dbRecords.length === 0) return 0;
+                return Math.min(...dbRecords.map(r => r.score));
+            }, [dbRecords]);
+
+            // Delete Record
+            const handleDeleteRecord = (id) => {
+                if (window.confirm("Hapus data nilai siswa ini?")) {
+                    setDbRecords(prev => prev.filter(r => r.id !== id));
+                }
+            };
+
+            // Clear All
+            const handleClearDb = () => {
+                if (window.confirm("Apakah Anda yakin ingin MENGHAPUS SELURUH database nilai? Tindakan ini tidak dapat dibatalkan!")) {
+                    setDbRecords([]);
+                }
+            };
+
+            // Export CSV Logic
+            const handleExportCsv = () => {
+                if (dbRecords.length === 0) {
+                    alert("Belum ada data untuk diekspor!");
+                    return;
+                }
+
+                let csvContent = "\uFEFF"; // UTF-8 BOM
+                csvContent += "No,Nama Siswa,Kelas,Skor Akhir,Jawaban Benar,Total Soal,Waktu Selesai\n";
+
+                filteredRecords.forEach((r, idx) => {
+                    const cleanName = `"${r.name.replace(/"/g, '""')}"`;
+                    csvContent += `${idx + 1},${cleanName},${r.studentClass},${r.score},${r.correctCount || '-'},${r.totalCount || 30},"${r.date}"\n`;
+                });
+
+                const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement("a");
+                link.setAttribute("href", url);
+                link.setAttribute("download", `REKAP_NILAI_TRYOUT_PKWU_SMARANSA_${selectedClass}_${Date.now()}.csv`);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            };
+
+            return (
+                <div className="space-y-6">
+                    {/* Top Bar */}
+                    <div className="bg-white p-6 rounded-2xl shadow-md border border-slate-200 flex flex-wrap items-center justify-between gap-4">
+                        <div>
+                            <h2 className="text-xl font-bold text-slate-800">Database & Rekap Nilai Try Out TKA</h2>
+                            <p className="text-xs text-slate-500 mt-0.5">SMAN 1 Randublatung • Produk dan Kewirausahaan</p>
+                        </div>
+
+                        <div className="flex flex-wrap items-center gap-2">
+                            <button
+                                onClick={handleExportCsv}
+                                className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs md:text-sm px-4 py-2 rounded-lg shadow transition flex items-center space-x-1.5"
+                            >
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                <span>Ekspor Ke Excel / CSV</span>
+                            </button>
+
+                            <button
+                                onClick={onBackToHome}
+                                className="bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold text-xs md:text-sm px-4 py-2 rounded-lg transition"
+                            >
+                                Keluar Admin
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* School Metrics Cards */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                            <div className="text-xs font-semibold text-slate-400 uppercase">Total Peserta</div>
+                            <div className="text-2xl font-extrabold text-blue-700 mt-1">{dbRecords.length} <span className="text-xs text-slate-400 font-normal">Siswa</span></div>
+                        </div>
+
+                        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                            <div className="text-xs font-semibold text-slate-400 uppercase">Rata-Rata Sekolah</div>
+                            <div className="text-2xl font-extrabold text-indigo-700 mt-1">{schoolAvg} <span className="text-xs text-slate-400 font-normal">/ 100</span></div>
+                        </div>
+
+                        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                            <div className="text-xs font-semibold text-slate-400 uppercase">Nilai Tertinggi</div>
+                            <div className="text-2xl font-extrabold text-emerald-600 mt-1">{highestScore}</div>
+                        </div>
+
+                        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                            <div className="text-xs font-semibold text-slate-400 uppercase">Nilai Terendah</div>
+                            <div className="text-2xl font-extrabold text-rose-600 mt-1">{lowestScore}</div>
+                        </div>
+                    </div>
+
+                    {/* Controls & Table Container */}
+                    <div className="bg-white rounded-2xl shadow-md border border-slate-200 overflow-hidden space-y-4 p-6">
+                        {/* Filters */}
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div>
+                                <label className="block text-xs font-bold text-slate-600 uppercase mb-1">Filter Kelas</label>
+                                <select
+                                    value={selectedClass}
+                                    onChange={(e) => setSelectedClass(e.target.value)}
+                                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 bg-white focus:ring-2 focus:ring-blue-600 outline-none"
+                                >
+                                    <option value="ALL">Semua Kelas (XII.1 - XII.10)</option>
+                                    {CLASSES_LIST.map(c => (
+                                        <option key={c} value={c}>Kelas {c}</option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            <div>
+                                <label className="block text-xs font-bold text-slate-600 uppercase mb-1">Urutan (Sort)</label>
+                                <select
+                                    value={sortBy}
+                                    onChange={(e) => setSortBy(e.target.value)}
+                                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 bg-white focus:ring-2 focus:ring-blue-600 outline-none"
+                                >
+                                    <option value="NAME_ASC">Abjad Nama (A - Z)</option>
+                                    <option value="NAME_DESC">Abjad Nama (Z - A)</option>
+                                    <option value="SCORE_HIGH">Nilai Tertinggi</option>
+                                    <option value="SCORE_LOW">Nilai Terendah</option>
+                                    <option value="DATE_DESC">Paling Baru Selesai</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label className="block text-xs font-bold text-slate-600 uppercase mb-1">Cari Nama Siswa</label>
+                                <input
+                                    type="text"
+                                    placeholder="Ketik nama..."
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-medium focus:ring-2 focus:ring-blue-600 outline-none"
+                                />
+                            </div>
+                        </div>
+
+                        {/* Table */}
+                        <div className="overflow-x-auto border border-slate-200 rounded-xl">
+                            <table className="w-full text-left text-sm">
+                                <thead className="bg-slate-100 text-slate-700 text-xs uppercase font-bold border-b border-slate-200">
+                                    <tr>
+                                        <th className="p-3.5 w-12 text-center">No</th>
+                                        <th className="p-3.5">Nama Siswa</th>
+                                        <th className="p-3.5 w-24 text-center">Kelas</th>
+                                        <th className="p-3.5 w-28 text-center">Skor Akhir</th>
+                                        <th className="p-3.5 w-32 text-center">Jawaban Benar</th>
+                                        <th className="p-3.5 w-44 text-center">Waktu Pengerjaan</th>
+                                        <th className="p-3.5 w-16 text-center">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-slate-200">
+                                    {filteredRecords.length > 0 ? (
+                                        filteredRecords.map((r, idx) => (
+                                            <tr key={r.id} className="hover:bg-slate-50 transition">
+                                                <td className="p-3.5 text-center text-xs text-slate-400 font-bold">{idx + 1}</td>
+                                                <td className="p-3.5 font-bold text-slate-800">{r.name}</td>
+                                                <td className="p-3.5 text-center">
+                                                    <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">
+                                                        {r.studentClass}
+                                                    </span>
+                                                </td>
+                                                <td className="p-3.5 text-center">
+                                                    <span className={`text-base font-black ${r.score >= 75 ? 'text-emerald-600' : 'text-rose-600'}`}>
+                                                        {r.score}
+                                                    </span>
+                                                </td>
+                                                <td className="p-3.5 text-center font-semibold text-slate-600">
+                                                    {r.correctCount || '-'} / {r.totalCount || 30}
+                                                </td>
+                                                <td className="p-3.5 text-center text-xs text-slate-500 font-medium">
+                                                    {r.date}
+                                                </td>
+                                                <td className="p-3.5 text-center">
+                                                    <button
+                                                        onClick={() => handleDeleteRecord(r.id)}
+                                                        className="text-rose-500 hover:text-rose-700 p-1 rounded hover:bg-rose-50 transition"
+                                                        title="Hapus Data"
+                                                    >
+                                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                        </svg>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    ) : (
+                                        <tr>
+                                            <td colSpan="7" className="p-8 text-center text-slate-400 text-xs font-medium">
+                                                Tidak ada data nilai yang sesuai dengan filter.
+                                            </td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {/* Bottom Actions */}
+                        {dbRecords.length > 0 && (
+                            <div className="flex justify-end pt-2">
+                                <button
+                                    onClick={handleClearDb}
+                                    className="text-xs text-rose-600 hover:text-rose-800 font-semibold underline"
+                                >
+                                    Kosongkan Database Nilai
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        // Render App
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+</body>
+</html>
+```eof
+
+### Ringkasan Fitur Aplikasi Web:
+1. **Identitas & Akses Ujian**:
+   - Form pendaftaran nama, pilihan kelas (XII.1 s.d. XII.10), dan verifikasi token (`pkwusmaransa1`).
+2. **Pengerjaan Soal (Try Out)**:
+   - Memuat 30 soal lengkap sesuai lampiran indikator & soal TKA PKWU 2025.
+   - Soal diacak (*shuffle*) secara otomatis setiap kali ujian dimulai.
+   - *Timer* pengerjaan mundur selama 60 menit.
+   - Peta nomor soal interaktif dengan tombol "Ragu-Ragu".
+3. **Database & Rekapitulasi Guru**:
+   - Proteksi kata sandi guru (`nilaipkwusmaransa1`).
+   - Penyimpanan nilai permanen di peramban (*localStorage*).
+   - Fitur pencarian, filter kelas, urutan berdasarkan nama/nilai, kalkulasi rata-rata nilai sekolah, serta ekspor file `.csv` (Excel).
